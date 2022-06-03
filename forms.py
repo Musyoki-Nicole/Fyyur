@@ -233,7 +233,6 @@ class ArtistForm(FlaskForm):
             'seeking_description'
      )
 
-
 def validate_phone(form, field):
         if len(field.data) > 16:
             raise ValidationError('Invalid phone number.')
