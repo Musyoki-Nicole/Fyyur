@@ -70,9 +70,9 @@ class Artist(db.Model):
     past_shows_count = db.Column(db.Integer, default=0)
     upcoming_shows_count = db.Column(db.Integer, default=0)
     shows = db.relationship('Show', backref='artist', lazy=True, cascade='all, delete')
-    '''
+    
     def toDict(self):
-       return dict(id=self.id, name=self.name)'''
+       return dict(id=self.id, name=self.name)
 
 class Show(db.Model):
     __tablename__ = 'shows'
