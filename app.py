@@ -88,31 +88,6 @@ class Show(db.Model):
 db.create_all()
 db.session.commit()
 
-venue1 = Venue(1, 'The Musical Hop',  '{"Jazz", "Reggae", "Swing", "Classical", "Folk"}', '1015 Folsom Street', 'San Francisco', 'CA', '123-123-1234', 'https://www.themusicalhop.com', 'https://www.facebook.com/TheMusicalHop', True, 'We are on the lookout for a local artist to play every two weeks. Please call us.', 'https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60', 1, 0);
-venue2 = Venue(2, 'The Dueling Pianos Bar',  '{"Classical", "R&B", "Hip-Hop"}', '335 Delancey Street', 'New York', 'NY', '914-003-1132', 'https://www.theduelingpianos.com', 'https://www.facebook.com/theduelingpianos', False, 'Not currently seeking talent.', 'https://images.unsplash.com/photo-1497032205916-ac775f0649ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80', 0, 0);
-venue3 = Venue(3, 'Park Square Live Music & Coffee',  '{"Rock n Roll", "Jazz", "Classical", "Folk"}', '34 Whiskey Moore Ave', 'San Francisco', 'CA', '415-000-1234', 'https://www.parksquarelivemusicandcoffee.com', 'https://www.facebook.com/ParkSquareLiveMusicAndCoffee', False, 'Not currently seeking talent.', 'https://images.unsplash.com/photo-1485686531765-ba63b07845a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=747&q=80', 1, 1);
-artist1 = Artist(1, 'Guns N Petals', '{"Rock n Roll"}', 'San Francisco', 'CA', '326-123-5000', 'https://www.gunsnpetalsband.com', 'https://www.facebook.com/GunsNPetals', True, 'Looking for shows to perform at in the San Francisco Bay Area!', 'https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80', 1, 0);
-artist2 = Artist(2, 'Matt Quevedo', '{"Jazz"}', 'New York', 'NY', '300-400-5000', 'No Website', 'https://www.facebook.com/mattquevedo923251523', False, 'Not currently seeking performance venues.', 'https://images.unsplash.com/photo-1495223153807-b916f75de8c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80', 1, 0);
-artist3 = Artist(3, 'The Wild Sax Band', '{"Jazz", "Classical"}', 'San Francisco', 'CA', '432-325-5432', 'No Website', 'No Facebook Link', False, 'Not currently seeking performance venues.', 'https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80', 0, 3);
-show1 = Show(1, 1, 1, '2019-05-21T21:30:00.000Z');
-show2 = Show(2, 2, 3, '2019-06-15T23:00:00.000Z');
-show3 = Show(3, 3, 3, '2035-04-01T20:00:00.000Z');
-show4 = Show(4, 3, 3, '2035-04-08T20:00:00.000Z');
-show5 = Show(5, 3, 3, '2035-04-15T20:00:00.000Z');
-
-db.session.add(venue1)
-db.session.add(venue2)
-db.session.add(venue3)
-db.session.add(artist1)
-db.session.add(artist2)
-db.session.add(artist3)
-db.session.add(show1)
-db.session.add(show2)
-db.session.add(show3)
-db.session.add(show4)
-db.session.add(show5)
-db.session.commit()
-
 #----------------------------------------------------------------------------#
 # Filters.
 #----------------------------------------------------------------------------#
@@ -144,32 +119,19 @@ def index():
 @app.route('/venues')
 def venues():
 
-  current_time = datetime.now()
-  venue_city_state = ''
-
   data = []
   venues = Venue.query.all()
 
   for venue in venues:
-    upcomingshows = venue.shows
-    filtered_upcomingshows = [show for show in upcomingshows if show.start_time > current_time]
-    if venue_city_state == venue.city + venue.state:
-      data[len(data) - 1]["venues"].append({
+    data.append({
+      "city": venue.city, 
+      "state": venue.state, 
+      "venues": [{
         "id": venue.id, 
-        "name": venue.name,
+        "name": venue.name, 
         "num_upcoming_shows": len(filtered_upcomingshows)
-      })
-    else:
-      venue_city_state == venue.city + venue.state
-      data.append({
-        "city": venue.city, 
-        "state": venue.state, 
-        "venues": [{
-          "id": venue.id, 
-          "name": venue.name, 
-          "num_upcoming_shows": len(filtered_upcomingshows)
-        }]
-      })
+      }]
+    })
 
   return render_template('pages/venues.html', areas=data);
 
