@@ -129,7 +129,7 @@ def venues():
       "venues": [{
         "id": venue.id, 
         "name": venue.name, 
-        "num_upcoming_shows": len(filtered_upcomingshows)
+        "num_upcoming_shows": venue.upcoming_shows_count
       }]
     })
 
